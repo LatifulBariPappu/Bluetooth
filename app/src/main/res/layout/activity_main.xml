@@ -50,4 +50,12 @@
         android:minWidth="200dp"
         android:text="Get Paired Devices"/>
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/pairTv"
+        android:minWidth="200dp"
+        android:text=""
+        android:textColor="@color/black"/>
+
 </LinearLayout>
