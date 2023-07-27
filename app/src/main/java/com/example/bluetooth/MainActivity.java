@@ -1,9 +1,11 @@
 package com.example.bluetooth;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -12,6 +14,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.Set;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -84,8 +88,40 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+        mPairedBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(bluetoothAdapter.isEnabled()){
+                    mPairedTv.setText("Paired Devices");
+                    Set<BluetoothDevice> devices=bluetoothAdapter.getBondedDevices();
+
+                    for(BluetoothDevice device:devices){
+                        mPairedTv.append("\n Device : "+device.getName()+" , "+device);
+                    }
+                }else {
+                    showToast("Turn on blutooth to get paired devices");
+                }
+            }
+        });
 
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+
+        switch (requestCode){
+            case REQUEST_ENABLE_BT:
+                if(requestCode==RESULT_OK){
+                    mBlueTv.setImageResource(R.drawable.on);
+                    showToast("Bluetooth is on");
+                }else{
+                    showToast("Bluetooth is off");
+                }
+                break;
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
     private void showToast(String msg){
         Toast.makeText(getApplicationContext(),msg,Toast.LENGTH_SHORT).show();
     }
